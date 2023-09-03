@@ -1,0 +1,4 @@
+gql[RequestsHTTPTransport,HTTPTXTransport]
+urllib3
+requests
+requests-toolbelt
