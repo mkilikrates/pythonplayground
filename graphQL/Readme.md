@@ -738,7 +738,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install --upgrade -r requirements.txt
-python graphQL-demo.py
+python app-demo.py
 ```
 
 #### Queries Commented on the code
