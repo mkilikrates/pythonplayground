@@ -650,7 +650,7 @@ query = dsl_gql(
 )
 ```
 
-on the [graphQL-demo.py](graphQL-demo.py) query_continents
+on the [app-demo.py](./src/sync/app-demo.py) query_continents
 
 #### Dynamic Query with Variables
 
