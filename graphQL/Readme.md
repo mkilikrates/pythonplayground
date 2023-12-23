@@ -678,7 +678,7 @@ query = dsl_gql(
 )
 ```
 
-on the [graphQL-demo.py](graphQL-demo.py) query_contry_by_code
+on the [app-demo.py](./src/sync/app-demo.py) query_contry_by_code
 
 #### Dynamic Query using Fragments
 
@@ -711,7 +711,7 @@ query = dsl_gql(
 )
 ```
 
-on the [graphQL-demo.py](graphQL-demo.py) query_contries_on_continent
+on the [app-demo.py](./src/sync/app-demo.py) query_contries_on_continent
 
 ### Logging and Cavets
 
