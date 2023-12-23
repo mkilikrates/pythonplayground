@@ -48,7 +48,7 @@ Since we are dealing with public APIs we are not covering doing changes (mutatio
 
 [Explorer](https://countries.trevorblades.com/graphql) is a "graphical interactive in-browser GraphQL IDE" that that includes docs, syntax highlighting, and validation errors.
 
-For details on concepts please look at [Introduction to GraphQL](https://graphql.org/learn/) or [Main Concepts](https://graphql-docs.fmr.com/docs/learning/concepts/)
+For details on concepts please look at [Introduction to GraphQL](https://graphql.org/learn/)
 
 ### Sample Queries
 
