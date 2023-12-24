@@ -743,7 +743,7 @@ python app-demo.py
 
 #### Queries Commented on the code
 
-Since this is just a demo session, the idea is execute one example each time, so you must comment / uncomment the query you intend to use
+Since this is just a demo session, the idea is execute one example each time on the [sync](./src/sync/app-demo.py), so you must comment / uncomment the query you intend to use
 
 ```python
 # simple query
@@ -762,7 +762,7 @@ Sometimes you want to have a single permanent reconnecting async session to a Gr
 
 It is now possible to have a single reconnecting session using the [connect_async](https://gql.readthedocs.io/en/stable/advanced/async_permanent_session.html) method of Client with a reconnecting=True argument.
 
-For instance, in a single session you can make several queries like you see in the [async-code](./src/async/app-demo.py).
+For instance, in a single session you can all queries we use before in a single code [async-code](./src/async/app-demo.py).
 
 ## Useful Links
 
