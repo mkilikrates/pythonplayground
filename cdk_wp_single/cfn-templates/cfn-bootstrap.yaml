@@ -150,49 +150,6 @@ Resources:
                   Ref: AWS::AccountId
                 kms:ViaService:
                   - Fn::Sub: s3.${AWS::Region}.amazonaws.com
-          #         - Fn::Sub: rds.${AWS::Region}.amazonaws.com
-          #         - Fn::Sub: secretsmanager.${AWS::Region}.amazonaws.com
-          #         - Fn::Sub: elasticfilesystem.${AWS::Region}.amazonaws.com
-          # - Action:
-          #     - kms:Decrypt*
-          #     - kms:Describe*
-          #     - kms:Encrypt*
-          #     - kms:ReEncrypt*
-          #     - kms:GenerateDataKey*
-          #   Effect: Allow
-          #   Principal:
-          #     Service: 
-          #       Fn::Sub: logs.${AWS::Region}.amazonaws.com
-          #   Resource: "*"
-          #   Condition:
-          #     ArnLike:
-          #       kms:EncryptionContext:aws:logs:arn: 
-          #         Fn::Sub: "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
-          # - Action:
-          #     - kms:Decrypt*
-          #     - kms:Describe*
-          #     - kms:Encrypt*
-          #     - kms:ReEncrypt*
-          #     - kms:GenerateDataKey*
-          #   Effect: Allow
-          #   Principal:
-          #     AWS: "*"
-          #   Resource: "*"
-          #   Condition:
-          #     ArnLike:
-          #       aws:PrincipalArn: 
-          #         Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/*-${Qualifier}-*"
-          # - Action:
-          #     - kms:Decrypt*
-          #     - kms:Describe*
-          #     - kms:Encrypt*
-          #     - kms:ReEncrypt*
-          #     - kms:GenerateDataKey*
-          #   Effect: Allow
-          #   Principal:
-          #     AWS:
-          #       Fn::Sub: ${FilePublishingRole.Arn}
-          #   Resource: "*"
     Condition: CreateNewKey
   FileAssetsBucketEncryptionKeyAlias:
     Condition: CreateNewKey

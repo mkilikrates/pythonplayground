@@ -71,19 +71,20 @@ In this case my changes are:
 - Enable Key rotation and Multi-Region on KMS
 - Use same name from S3 Bucket to ECR Repository
 - Use same KMS CMK for both S3 Bucket and ECR Repository
-- KMS Policy to allow rds, secrets, logs and efs services due import via from_lookup not allow change resource policy
 
 Export variables and execute bootstrap:
 
 ```bash
-export AWS_ACCOUNT=<Account Number>
-export AWS_REGION='us-east-1'
-export BUCKET='<my bucket>'
-export QUALIFIER='myprj'
-export STACK_NAME='myprjcdkbootstrap'
-export WORDPRESS_DB_USER='<myadminuser>'
+export AWS_ACCOUNT=650437703631
+export AWS_REGION='<region>'
+export CDK_BUCKET='<cdk-bucket>'
+export CDK_QUALIFIER='<nameprefix>'
+export CDK_STACK_NAME='<cdk stack name>' # mylabcdkbootstrap
 export MY_IPv4="$(curl -4 ifconfig.co/)"
 #export MY_IPv6="$(curl -6 ifconfig.co/)"
+export WORDPRESS_DB_USER='<admin-user>'
+export WORDPRESS_BUCKET='<wp-bucket>'
+export WORDPRESS_QUALIFIER='<nameprefix>'
 ```
 
 Deploy using Template
