@@ -92,16 +92,19 @@ Deploy using Template
 cdk bootstrap "aws://$AWS_ACCOUNT/$AWS_REGION" --template 'cfn-templates/cfn-bootstrap.yaml' --bootstrap-bucket-name "$CDK_BUCKET" --bootstrap-customer-key --qualifier "$CDK_QUALIFIER" --termination-protection --toolkit-stack-name "$CDK_STACK_NAME" --version-reporting false --public-access-block-configuration
 ```
 
-#https://github.com/dhenne/aws-cdk-fargate-aurora-wordpress-example/blob/main/cdk_stacks/application.py
-#https://www.codecentric.de/wissens-hub/blog/fargate-with-efs-and-aurora-serverless-using-aws-cdk
-#https://github.com/amitrahav/wordpress-AWSecs-fargate--template/blob/master/nginx.Dockerfile
-#https://aws.amazon.com/pt/blogs/startups/how-to-accelerate-your-wordpress-site-with-amazon-cloudfront/
-#https://wp2static.com/
-#https://github.com/aws/aws-cdk/issues/8977
-#https://repost.aws/knowledge-center/fargate-unable-to-mount-efs
-#https://github.com/MikletNg/aws-serverless-wordpress/tree/master
-#https://medium.com/@mhkafadar/a-practical-aws-cdk-walkthrough-deploying-multiple-websites-to-s3-and-cloudfront-7caaabc9c327
-#https://dev.to/aws-builders/best-practices-for-running-wordpress-on-aws-using-cdk-aj9
-https://www.hostinger.com/tutorials/how-to-migrate-wordpress
+## Links used
+
+
+- https://github.com/dhenne/aws-cdk-fargate-aurora-wordpress-example/blob/main/cdk_stacks/application.py
+- https://www.codecentric.de/wissens-hub/blog/fargate-with-efs-and-aurora-serverless-using-aws-cdk
+- https://github.com/amitrahav/wordpress-AWSecs-fargate--template/blob/master/nginx.Dockerfile
+- https://aws.amazon.com/pt/blogs/startups/how-to-accelerate-your-wordpress-site-with-amazon-cloudfront/
+- https://wp2static.com/
+- https://github.com/aws/aws-cdk/issues/8977
+- https://repost.aws/knowledge-center/fargate-unable-to-mount-efs
+- https://github.com/MikletNg/aws-serverless-wordpress/tree/master
+- https://medium.com/@mhkafadar/a-practical-aws-cdk-walkthrough-deploying-multiple-websites-to-s3-and-cloudfront-7caaabc9c327
+- https://dev.to/aws-builders/best-practices-for-running-wordpress-on-aws-using-cdk-aj9
+- https://www.hostinger.com/tutorials/how-to-migrate-wordpress
 
 Enjoy!
