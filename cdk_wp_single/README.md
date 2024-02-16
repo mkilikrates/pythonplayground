@@ -95,7 +95,7 @@ cdk bootstrap "aws://$AWS_ACCOUNT/$AWS_REGION" --template 'cfn-templates/cfn-boo
 
 ## Links used
 
-
+- https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-enabling-email-on-wordpress
 - https://github.com/dhenne/aws-cdk-fargate-aurora-wordpress-example/blob/main/cdk_stacks/application.py
 - https://www.codecentric.de/wissens-hub/blog/fargate-with-efs-and-aurora-serverless-using-aws-cdk
 - https://github.com/amitrahav/wordpress-AWSecs-fargate--template/blob/master/nginx.Dockerfile

@@ -230,19 +230,26 @@ class WordpressStack(Stack):
                 kms_key=self.kms_key,
                 log_configuration=ecs.ExecuteCommandLogConfiguration(
                     cloud_watch_log_group=ecsexeclog_group,
-                    cloud_watch_encryption_enabled=True,
-                    s3_bucket=self.bucket,
-                    s3_encryption_enabled=True,
-                    s3_key_prefix="exec-command-output"
+                    cloud_watch_encryption_enabled=True
+                    # s3_bucket=self.bucket,
+                    # s3_encryption_enabled=True,
+                    # s3_key_prefix="exec-command-output"
                 ),
                 logging=ecs.ExecuteCommandLogging.OVERRIDE
             )
+        )
+
+        CfnOutput(
+            scope=self,
+            id=f"{qualifier}WPECSCluster",
+            value=self.cluster.cluster_name
         )
 
         wordpress_volume = ecs.Volume(
             name=f"{qualifier}WProot",
             efs_volume_configuration=ecs.EfsVolumeConfiguration(
                 file_system_id=self.file_system.file_system_id,
+                root_directory='/',
                 transit_encryption="ENABLED",
                 authorization_config=ecs.AuthorizationConfig(
                     access_point_id=fsaccesspoint.access_point_id,
@@ -260,14 +267,41 @@ class WordpressStack(Stack):
             ),
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name(
-                    "service-role/AmazonECSTaskExecutionRolePolicy"
+                    "AmazonSSMManagedInstanceCore"
                 ),
-            ]
+            ],
+            inline_policies={
+                "WriteLogs": iam.PolicyDocument(
+                    statements=[
+                        iam.PolicyStatement(
+                            actions=[
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents"
+                            ],
+                            effect=iam.Effect.ALLOW,
+                            resources=[
+                                ecsexeclog_group.log_group_arn
+                            ]
+                        )
+                    ]
+                ),
+                "DescribeLogs": iam.PolicyDocument(
+                    statements=[
+                        iam.PolicyStatement(
+                            actions=[
+                                "logs:DescribeLogGroups"
+                            ],
+                            effect=iam.Effect.ALLOW,
+                            resources=["*"]
+                        )
+                    ]
+                )
+            }     
         )
-
         event_task = ecs.FargateTaskDefinition(
             self, 
-            f"{qualifier}WordpressTask",
+            f"{qualifier}Wordpress-Task",
             volumes=[wordpress_volume],
             task_role=task_role
         )
@@ -367,14 +401,15 @@ class WordpressStack(Stack):
             platform_version=ecs.FargatePlatformVersion.VERSION1_4,
             cluster=self.cluster,
             vpc_subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC, one_per_az=True),
-            assign_public_ip=True
+            assign_public_ip=True,
+            enable_execute_command=True
         )
         #
         # scaling
         #
         scaling = self.wordpress_service.auto_scale_task_count(
-            min_capacity=1,
-            max_capacity=5
+            min_capacity=0,
+            max_capacity=1
         )
         scaling.scale_on_cpu_utilization(
             "CpuScaling",
@@ -382,7 +417,6 @@ class WordpressStack(Stack):
             scale_in_cooldown=Duration.seconds(120),
             scale_out_cooldown=Duration.seconds(30),
         )
-
         #
         # ALB
         #
@@ -418,12 +452,20 @@ class WordpressStack(Stack):
             open=False
         )
 
-        http_listener.add_targets(
+        target_group =http_listener.add_targets(
             f"{qualifier}HttpServiceTarget",
             protocol=elbv2.ApplicationProtocol.HTTP,
             targets=[self.wordpress_service],
             health_check=elbv2.HealthCheck(healthy_http_codes="200,301,302")
         )
+        
+        scaling.scale_on_request_count(
+            id="AlbRequestScaling",
+            disable_scale_in=False,
+            requests_per_target=1,
+            target_group=target_group
+        )
+
         #
         # access from Internet to ALB
         #
@@ -479,9 +521,19 @@ class WordpressStack(Stack):
             "yum install -y amazon-efs-utils",
             "yum install -y nfs-utils",
             "file_system_id_1=" + self.file_system.file_system_id,
-            "efs_mount_point_1=/mnt/efs/fs1", "mkdir -p \"${efs_mount_point_1}\"",
+            "efs_mount_point_1=/mnt/efs/fs1", 
+            "mkdir -p \"${efs_mount_point_1}\"",
             "test -f \"/sbin/mount.efs\" && echo \"${file_system_id_1}:/ ${efs_mount_point_1} efs defaults,_netdev,tls,iam\" >> /etc/fstab || \" + \"echo \"${file_system_id_1}.efs." + region + ".amazonaws.com:/ ${efs_mount_point_1} nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0\" >> /etc/fstab",
-            "mount -a -t efs,nfs4 defaults"
+            "mount -a -t efs,nfs4 defaults",
+            "groupadd -g 82 wordpress",
+            "adduser -u 82 -g 82 wordpress",
+            "yum install -y docker",
+            "usermod -a -G docker wordpress",
+            "usermod -a -G docker ec2-user",
+            "usermod -a -G docker ssm-user",
+            "newgrp docker",
+            "systemctl enable docker.service",
+            "systemctl start docker.service"
         )
 
         http_listener.connections.allow_default_port_from(self.host)
