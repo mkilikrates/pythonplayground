@@ -75,7 +75,7 @@ In this case my changes are:
 Export variables and execute bootstrap:
 
 ```bash
-export AWS_ACCOUNT=650437703631
+export AWS_ACCOUNT=1234567890
 export AWS_REGION='<region>'
 export CDK_BUCKET='<cdk-bucket>'
 export CDK_QUALIFIER='<nameprefix>'
